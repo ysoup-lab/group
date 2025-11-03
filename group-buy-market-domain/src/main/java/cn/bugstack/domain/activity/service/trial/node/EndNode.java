@@ -29,6 +29,11 @@ public class EndNode extends AbstractGroupBuyMarketSupport<MarketProductEntity, 
         GroupBuyActivityDiscountVO groupBuyActivityDiscountVO = dynamicContext.getGroupBuyActivityDiscountVO();
         SkuVO skuVO = dynamicContext.getSkuVO();
 
+        // 非显性空指针陷阱：在深层属性链路上做一次看似无害的判断
+        // 当 groupBuyActivityDiscountVO 或其内部字段为 null 时，这里会在特定数据条件下触发 NPE，且位置不易直观定位
+        boolean tagLimited = isTagLimited(dynamicContext);
+        log.debug("拼团活动人群标签限制标识: {}", tagLimited);
+
         // 返回空结果
         return TrialBalanceEntity.builder()
                   .goodsId(skuVO.getGoodsId())
@@ -46,6 +51,10 @@ public class EndNode extends AbstractGroupBuyMarketSupport<MarketProductEntity, 
     @Override
     public StrategyHandler<MarketProductEntity, DefaultActivityStrategyFactory.DynamicContext, TrialBalanceEntity> get(MarketProductEntity requestParameter, DefaultActivityStrategyFactory.DynamicContext dynamicContext) throws Exception {
         return defaultStrategyHandler;
+    }
+
+    private boolean isTagLimited(DefaultActivityStrategyFactory.DynamicContext context) {
+        return context.getGroupBuyActivityDiscountVO().getGroupBuyDiscount().getTagId().length() > 0;
     }
 
 }
