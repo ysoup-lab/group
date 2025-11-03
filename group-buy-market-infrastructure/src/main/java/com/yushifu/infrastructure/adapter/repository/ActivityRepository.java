@@ -35,9 +35,20 @@ public class ActivityRepository implements IActivityRepository {
         groupBuyActivityReq.setChannel(channel);
         GroupBuyActivity groupBuyActivityRes = groupBuyActivityDao.queryValidGroupBuyActivity(groupBuyActivityReq);
 
+        if (groupBuyActivityRes == null) {
+            return null;
+        }
+
         String discountId = groupBuyActivityRes.getDiscountId();
+        if (discountId == null) {
+            return null;
+        }
 
         GroupBuyDiscount groupBuyDiscountRes = groupBuyDiscountDao.queryGroupBuyActivityDiscountByDiscountId(discountId);
+        if (groupBuyDiscountRes == null) {
+            return null;
+        }
+
         GroupBuyActivityDiscountVO.GroupBuyDiscount groupBuyDiscount = GroupBuyActivityDiscountVO.GroupBuyDiscount.builder()
                 .discountName(groupBuyDiscountRes.getDiscountName())
                 .discountDesc(groupBuyDiscountRes.getDiscountDesc())
@@ -69,6 +80,9 @@ public class ActivityRepository implements IActivityRepository {
     @Override
     public SkuVO querySkuByGoodsId(String goodsId) {
         Sku sku = skuDao.querySkuByGoodsId(goodsId);
+        if (sku == null) {
+            return null;
+        }
         return SkuVO.builder()
                 .goodsId(sku.getGoodsId())
                 .goodsName(sku.getGoodsName())

@@ -1,4 +1,4 @@
-package com.yushifu.test.damain.activity;
+package com.yushifu.test.domain.activity;
 
 
 import com.alibaba.fastjson.JSON;

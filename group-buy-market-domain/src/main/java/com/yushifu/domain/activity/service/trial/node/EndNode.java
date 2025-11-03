@@ -24,10 +24,36 @@ public class EndNode extends AbstractGroupBuyMarketSupport<MarketProductEntity, 
 
     @Override
     public TrialBalanceEntity doApply(MarketProductEntity requestParameter, DefaultActivityStrategyFactory.DynamicContext dynamicContext) throws Exception {
-        log.info("拼团商品查询试算服务-EndNode userId:{} requestParameter:{}", requestParameter.getUserId(), JSON.toJSONString(requestParameter));
+        log.info("拼团商品查询试算服务-EndNode userId:{}" +
+                " requestParameter:{}", requestParameter.getUserId(), JSON.toJSONString(requestParameter));
 
         GroupBuyActivityDiscountVO groupBuyActivityDiscountVO = dynamicContext.getGroupBuyActivityDiscountVO();
         SkuVO skuVO = dynamicContext.getSkuVO();
+
+        // Handle null values gracefully
+        if (skuVO == null) {
+            return TrialBalanceEntity.builder()
+                    .goodsId(requestParameter.getGoodsId())
+                    .goodsName("未知商品")
+                    .originalPrice(new BigDecimal("0.00"))
+                    .deductionPrice(new BigDecimal("0.00"))
+                    .targetCount(0)
+                    .isVisible(false)
+                    .isEnable(false)
+                    .build();
+        }
+
+        if (groupBuyActivityDiscountVO == null) {
+            return TrialBalanceEntity.builder()
+                    .goodsId(skuVO.getGoodsId())
+                    .goodsName(skuVO.getGoodsName())
+                    .originalPrice(skuVO.getOriginalPrice())
+                    .deductionPrice(new BigDecimal("0.00"))
+                    .targetCount(0)
+                    .isVisible(false)
+                    .isEnable(false)
+                    .build();
+        }
 
         // 返回结果
         return TrialBalanceEntity.builder()
