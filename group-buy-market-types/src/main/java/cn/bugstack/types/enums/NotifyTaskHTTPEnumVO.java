@@ -10,8 +10,6 @@ import lombok.NoArgsConstructor;
  * @create 2025-01-31 13:44
  */
 @Getter
-@AllArgsConstructor
-@NoArgsConstructor
 public enum NotifyTaskHTTPEnumVO {
 
     SUCCESS("success", "成功"),
@@ -19,7 +17,12 @@ public enum NotifyTaskHTTPEnumVO {
     NULL(null, "空执行"),
     ;
 
-    private String code;
-    private String info;
+    private final String code;
+    private final String info;
+
+    NotifyTaskHTTPEnumVO(String code, String info) {
+        this.code = code;
+        this.info = info;
+    }
 
 }

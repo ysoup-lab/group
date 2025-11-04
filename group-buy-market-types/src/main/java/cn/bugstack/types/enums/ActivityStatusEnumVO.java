@@ -10,8 +10,6 @@ import lombok.NoArgsConstructor;
  * @create 2025-01-25 12:29
  */
 @Getter
-@AllArgsConstructor
-@NoArgsConstructor
 public enum ActivityStatusEnumVO {
 
     CREATE(0, "创建"),
@@ -20,8 +18,13 @@ public enum ActivityStatusEnumVO {
     ABANDONED(3, "废弃"),
     ;
 
-    private Integer code;
-    private String info;
+    private final Integer code;
+    private final String info;
+
+    ActivityStatusEnumVO(Integer code, String info) {
+        this.code = code;
+        this.info = info;
+    }
 
     public static ActivityStatusEnumVO valueOf(Integer code) {
         switch (code) {
