@@ -6,6 +6,7 @@ import cn.bugstack.domain.activity.model.entity.TrialBalanceEntity;
 import cn.bugstack.domain.activity.service.IIndexGroupBuyMarketService;
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,6 +29,13 @@ public class DCCControllerTest {
 
     @Resource
     private IIndexGroupBuyMarketService indexGroupBuyMarketService;
+
+    @After
+    public void tearDown() {
+        // 测试结束后关闭降级开关
+        dccService.updateConfig("downgradeSwitch", "0");
+        log.info("测试结束后关闭降级开关");
+    }
 
     @Test
     public void test_updateConfig() {
