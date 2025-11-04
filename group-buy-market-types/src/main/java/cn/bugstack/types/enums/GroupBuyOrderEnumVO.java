@@ -10,8 +10,6 @@ import lombok.NoArgsConstructor;
  * @create 2025-01-26 16:21
  */
 @Getter
-@AllArgsConstructor
-@NoArgsConstructor
 public enum GroupBuyOrderEnumVO {
 
     PROGRESS(0, "拼单中"),
@@ -19,8 +17,13 @@ public enum GroupBuyOrderEnumVO {
     FAIL(2, "失败"),
     ;
 
-    private Integer code;
-    private String info;
+    private final Integer code;
+    private final String info;
+
+    GroupBuyOrderEnumVO(Integer code, String info) {
+        this.code = code;
+        this.info = info;
+    }
 
     public static GroupBuyOrderEnumVO valueOf(Integer code) {
         switch (code) {
