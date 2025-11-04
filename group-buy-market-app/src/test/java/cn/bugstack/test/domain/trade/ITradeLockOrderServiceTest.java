@@ -8,6 +8,8 @@ import cn.bugstack.domain.trade.model.entity.MarketPayOrderEntity;
 import cn.bugstack.domain.trade.model.entity.PayActivityEntity;
 import cn.bugstack.domain.trade.model.entity.PayDiscountEntity;
 import cn.bugstack.domain.trade.model.entity.UserEntity;
+import cn.bugstack.domain.trade.model.valobj.NotifyConfigVO;
+import cn.bugstack.domain.trade.model.valobj.NotifyTypeEnumVO;
 import cn.bugstack.domain.trade.service.ITradeLockOrderService;
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
@@ -82,6 +84,10 @@ public class ITradeLockOrderServiceTest {
                         .originalPrice(trialBalanceEntity.getOriginalPrice())
                         .deductionPrice(trialBalanceEntity.getDeductionPrice())
                         .outTradeNo(outTradeNo)
+                        .notifyConfigVO(NotifyConfigVO.builder()
+                                .notifyType(NotifyTypeEnumVO.HTTP)
+                                .notifyUrl("http://localhost:8080/notify")
+                                .build())
                         .build());
 
         log.info("测试结果(New):{}",JSON.toJSONString(marketPayOrderEntityNew));

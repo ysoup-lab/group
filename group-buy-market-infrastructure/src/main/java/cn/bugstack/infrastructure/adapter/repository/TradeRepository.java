@@ -94,6 +94,13 @@ public class TradeRepository implements ITradeRepository {
         PayActivityEntity payActivityEntity = groupBuyOrderAggregate.getPayActivityEntity();
         PayDiscountEntity payDiscountEntity = groupBuyOrderAggregate.getPayDiscountEntity();
         NotifyConfigVO notifyConfigVO = payDiscountEntity.getNotifyConfigVO();
+        // 如果通知配置为空，设置默认值
+        if (notifyConfigVO == null) {
+            notifyConfigVO = NotifyConfigVO.builder()
+                    .notifyType(NotifyTypeEnumVO.HTTP)
+                    .notifyUrl("")
+                    .build();
+        }
         Integer userTakeOrderCount = groupBuyOrderAggregate.getUserTakeOrderCount();
 
         // 判断是否有团 - teamId 为空 - 新团、为不空 - 老团
